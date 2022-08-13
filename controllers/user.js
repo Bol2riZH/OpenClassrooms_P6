@@ -3,15 +3,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.signup = (req, res) => {
-  const user = new User({
-    email: req.body.email,
-    password: req.body.password,
+  bcrypt.hash(req.body.password, 10).then(hash => {
+    const user = new User({
+      email: req.body.email,
+      password: hash,
+    });
+    console.log(user);
+    user
+      .save()
+      .then(() => res.status(201).json({ message: 'User create' }))
+      .catch(error => res.status(400).json({ error }));
   });
-  console.log(user);
-  user
-    .save()
-    .then(() => res.status(201).json({ message: 'User create' }))
-    .catch(error => res.status(400).json({ error }));
 };
 
 exports.login = (req, res) => {

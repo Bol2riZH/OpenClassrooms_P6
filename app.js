@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const userRoutes = require('./routes/user');
-const saucesRoutes = require('./routes/sauces');
+const saucesRoutes = require('./routes/sauce');
 
 require('./models/DbConfig');
 

@@ -1,10 +1,24 @@
 const Sauce = require('../models/Sauce');
 
 exports.createSauce = (req, res) => {
+  // parse Json req to get a chain of string
+  const sauceContent = JSON.parse(req.body.sauce);
+
+  // delete _id (id is automaticly generate by BD)
+  delete sauceContent._id;
+
+  // delete the _userId (the one who create the sauce) > we use the userID of the token
+  delete sauceContent._userId;
+
   const sauce = new Sauce({
-    ...req.body,
+    ...sauceContent,
+    // get the userId from auth
+    userId: req.auth.userId,
+    // generate imageUrl from multer
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${
+      req.file.filename
+    }`,
   });
-  console.log(sauce);
   sauce
     .save()
     .then(() => res.status(201).json({ message: 'Sauce added !' }))

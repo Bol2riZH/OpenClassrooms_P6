@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = (req, res,next) => {
   try {
+    // TODO check bearer !!!
     // take the token after bearer
     const token = req.headers.authorization.split(' ')[1];
     // verify the token with the key below

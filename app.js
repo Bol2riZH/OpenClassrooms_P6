@@ -14,6 +14,7 @@ app.use(cors());
 
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', saucesRoutes);
+
 // answer to the localhost3000 request images folder
 app.use('/images', express.static(path.join(__dirname, 'images')));
 

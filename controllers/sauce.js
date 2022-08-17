@@ -89,7 +89,6 @@ exports.likedSauce = (req, res) => {
         case 0:
           if (sauce.usersLiked.includes(req.auth.userId)) {
             const indexOfUser = sauce.usersLiked.indexOf(req.auth.userId);
-            console.log(indexOfUser);
             Sauce.findByIdAndUpdate(req.params.id, {
               ...sauce,
               likes: sauce.likes--,
@@ -100,7 +99,6 @@ exports.likedSauce = (req, res) => {
           }
           if (sauce.usersDisliked.includes(req.auth.userId)) {
             const indexOfUser = sauce.usersDisliked.indexOf(req.auth.userId);
-            console.log(indexOfUser);
             Sauce.findByIdAndUpdate(req.params.id, {
               ...sauce,
               dislikes: sauce.dislikes--,

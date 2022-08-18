@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const cryptoJS = require('crypto-js');
 
 const User = require('../models/User');
 
@@ -10,15 +11,26 @@ exports.signup = (req, res) => {
       email: req.body.email,
       password: hash,
     });
+    const mailCrypt = cryptoJS
+    .HmacSHA256(req.body.email, process.env.MAIL_KEY)
+    .toString();
+    console.log(mailCrypt);
+    user.email = mailCrypt
+    console.log(user.email);
     user
       .save()
       .then(() => res.status(201).json({ message: 'User create' }))
       .catch(error => res.status(400).json({ error }));
+      console.log(user);
   });
 };
 
 exports.login = (req, res) => {
-  User.findOne({ email: req.body.email })
+  const mailCrypt = cryptoJS
+  .HmacSHA256(req.body.email, process.env.MAIL_KEY)
+  .toString();
+  console.log(mailCrypt);
+  User.findOne({ email: mailCrypt })
     .then(user => {
       if (!user) {
         res.status(401).json({ message: 'Incorrect email or password ' });

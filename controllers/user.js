@@ -12,24 +12,20 @@ exports.signup = (req, res) => {
       password: hash,
     });
     const mailCrypt = cryptoJS
-    .HmacSHA256(req.body.email, process.env.MAIL_KEY)
-    .toString();
-    console.log(mailCrypt);
-    user.email = mailCrypt
-    console.log(user.email);
+      .HmacSHA256(req.body.email, process.env.MAIL_KEY)
+      .toString();
+    user.email = mailCrypt;
     user
       .save()
       .then(() => res.status(201).json({ message: 'User create' }))
       .catch(error => res.status(400).json({ error }));
-      console.log(user);
   });
 };
 
 exports.login = (req, res) => {
   const mailCrypt = cryptoJS
-  .HmacSHA256(req.body.email, process.env.MAIL_KEY)
-  .toString();
-  console.log(mailCrypt);
+    .HmacSHA256(req.body.email, process.env.MAIL_KEY)
+    .toString();
   User.findOne({ email: mailCrypt })
     .then(user => {
       if (!user) {
@@ -40,13 +36,14 @@ exports.login = (req, res) => {
         .then(valid => {
           if (!valid) {
             res.status(401).json({ message: 'Incorrect email or password ' });
+          } else {
+            res.status(200).json({
+              userId: user._id,
+              token: jwt.sign({ userId: user._id }, process.env.TOKEN_KEY, {
+                expiresIn: '24h',
+              }),
+            });
           }
-          res.status(200).json({
-            userId: user._id,
-            token: jwt.sign({ userId: user._id }, process.env.TOKEN_KEY, {
-              expiresIn: '24h',
-            }),
-          });
         })
         .catch(error => res.status(500).json({ error }));
     })

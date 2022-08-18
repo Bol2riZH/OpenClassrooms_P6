@@ -1,11 +1,15 @@
+'use strict';
+
 const multer = require('multer');
 
+// DEFINE IMAGE FORMAT
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
   'image/png': 'png',
 };
 
+// SAVE IMAGE IN FOLDER
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
     callback(null, 'images');

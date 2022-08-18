@@ -1,7 +1,9 @@
+'use strict';
+
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-module.exports = (req, res,next) => {
+module.exports = (req, res, next) => {
   try {
     // take the token after bearer
     const token = req.headers.authorization.split(' ')[1];

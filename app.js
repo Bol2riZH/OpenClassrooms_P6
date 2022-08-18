@@ -1,6 +1,21 @@
+'use strict';
+
 const express = require('express');
+
+//CORS PACKAGE TO DEFINE HEADERS OPTION :
 const cors = require('cors');
-const path = require('path')
+/*
+default value :
+{
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+  }
+*/
+
+// path package define folder for images
+const path = require('path');
 
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauce');
@@ -15,7 +30,7 @@ app.use(cors());
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', saucesRoutes);
 
-// answer to the localhost3000 request images folder
+// SET A STATIC PATH TO IMAGE FOLDER
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;

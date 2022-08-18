@@ -1,26 +1,31 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cryptoJS = require('crypto-js');
+const validator = require('validator');
 
 require('dotenv').config();
 
 const User = require('../models/User');
 
 exports.signup = (req, res) => {
-  bcrypt.hash(req.body.password, 10).then(hash => {
-    const user = new User({
-      email: req.body.email,
-      password: hash,
+  if (!validator.isEmail(req.body.email)) {
+    return res.status(400).json({ message: 'email format incorrect' });
+  } else {
+    bcrypt.hash(req.body.password, 10).then(hash => {
+      const user = new User({
+        email: req.body.email,
+        password: hash,
+      });
+      const mailCrypt = cryptoJS
+        .HmacSHA256(req.body.email, process.env.MAIL_KEY)
+        .toString();
+      user.email = mailCrypt;
+      user
+        .save()
+        .then(() => res.status(201).json({ message: 'User create' }))
+        .catch(error => res.status(400).json({ error }));
     });
-    const mailCrypt = cryptoJS
-      .HmacSHA256(req.body.email, process.env.MAIL_KEY)
-      .toString();
-    user.email = mailCrypt;
-    user
-      .save()
-      .then(() => res.status(201).json({ message: 'User create' }))
-      .catch(error => res.status(400).json({ error }));
-  });
+  }
 };
 
 exports.login = (req, res) => {

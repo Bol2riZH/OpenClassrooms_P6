@@ -14,6 +14,10 @@ exports.signup = (req, res) => {
   // check email validation
   if (!validator.isEmail(req.body.email)) {
     return res.status(400).json({ message: 'email format incorrect' });
+  }
+  // check if password strong enough
+  if (!validator.isStrongPassword(req.body.password)) {
+    return res.status(400).json({ message: 'password not strong enough' });
   } else {
     // hash and salt email
     bcrypt.hash(req.body.password, 10).then(hash => {

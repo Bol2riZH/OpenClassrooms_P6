@@ -7,7 +7,7 @@ const fs = require('fs');
 exports.createSauce = (req, res) => {
   // parse Json req to get a chain of string
   const sauceContent = JSON.parse(req.body.sauce);
-  // delete _id (id is automaticly generate by BD)
+  // delete _id (id is automatically generate by BD)
   delete sauceContent._id;
   // delete the _userId (the one who create the sauce) > we use the userID of the token
   delete sauceContent._userId;
@@ -53,7 +53,7 @@ exports.updateSauce = (req, res) => {
     : { ...req.body };
   delete sauceContent._userId;
   Sauce.findById(req.params.id).then(sauce => {
-    if (sauce.userId != req.auth.userId) {
+    if (sauce.userId !== req.auth.userId) {
       res.status(401).json({ message: 'Unauthorized' });
     } else {
       Sauce.findByIdAndUpdate(req.params.id, {
@@ -70,7 +70,7 @@ exports.updateSauce = (req, res) => {
 exports.deleteSauce = (req, res) => {
   Sauce.findById(req.params.id).then(sauce => {
     // check userId
-    if (sauce.userId != req.auth.userId) {
+    if (sauce.userId !== req.auth.userId) {
       res.status(401).json({ message: 'Unauthorized' });
     } else {
       const filename = sauce.imageUrl.split('/images/')[1];

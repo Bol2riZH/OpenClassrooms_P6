@@ -1,7 +1,7 @@
 # PIIQUANTE
 ## OpenClassrooms Project 6 - back-end (auth - crud - API)
 
-The other side of the web developpement. With this project, now I can say that I know how it works !
+The other side of the web developpement. Now I can say that I know how it works !
 
 How everything is connect and how we can give informations from one side and ask from the other one.
 

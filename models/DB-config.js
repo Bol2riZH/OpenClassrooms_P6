@@ -1,7 +1,6 @@
 'use strict';
 
 const mongoose = require('mongoose');
-
 require('dotenv').config();
 
 // CONNECT TO DATA BASE

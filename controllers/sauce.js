@@ -79,7 +79,7 @@ exports.deleteSauce = (req, res) => {
         // delete sauce from DB
         Sauce.findByIdAndDelete(req.params.id)
           .then(() => res.status(200).json({ message: 'Sauce deleted !' }))
-          .catch(error => res.status(401).json({ error }));
+          .catch(error => res.status(403).json({ error }));
       });
     }
   });
